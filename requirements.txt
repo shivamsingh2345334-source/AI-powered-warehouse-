@@ -1,0 +1,8 @@
+opencv-python
+torch
+torchvision
+transformers
+pandas
+scikit-learn
+xgboost
+matplotlib
