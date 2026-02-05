@@ -1,0 +1,36 @@
+name: Day-1 CI - Data & Video Pipeline Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run sensor data generator
+      run: |
+        python scripts/generate_sensor_data.py
+
+    - name: Validate CSV exists
+      run: |
+        test -f data/warehouse_data.csv && echo "CSV generated successfully"
+
+    - name: Video script syntax check
+      run: |
+        python -m py_compile scripts/video_test.py
